@@ -66,81 +66,133 @@ const Navbar = () => (
 
 const HeroIllustration = () => (
   <div className="relative w-full aspect-video lg:aspect-square max-w-2xl mx-auto flex items-center justify-center">
-    {/* This is a simplified visual representation of the complex rendering in the image */}
-    <div className="absolute inset-0 bg-radial from-brand-accent/10 to-transparent blur-3xl pointer-events-none" />
+    {/* Background Depth Glows */}
+    <div className="absolute inset-0 bg-radial from-brand-accent/20 via-brand-accent/5 to-transparent blur-[120px] pointer-events-none" />
     
-    <div className="relative w-full h-full flex items-center justify-center">
-      {/* 01 Raw Material Input */}
-      <div className="absolute left-0 top-1/4 flex flex-col gap-6 z-20">
-        <div className="flex flex-col gap-1 items-end mr-4">
-          <span className="text-[10px] font-mono text-brand-accent uppercase tracking-widest">01 원료 투입</span>
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-brand-base/60 whitespace-nowrap">무기성 오니</span>
-            <div className="w-24 h-12 bg-white/5 border border-white/10 rounded-r-xl overflow-hidden">
-               <div className="w-full h-full bg-brand-dark/40 blur-sm" />
+    <div className="relative w-full h-full">
+      {/* 01: Raw Materials Feed (Sludge & Shells) */}
+      <div className="absolute left-4 top-1/4 z-30 space-y-8">
+        {[
+          { label: "무기성 오니", color: "bg-zinc-700", delay: 0 },
+          { label: "굴 패각", color: "bg-zinc-300", delay: 1 }
+        ].map((item, i) => (
+          <div key={i} className="flex flex-col items-end">
+            <span className="text-[10px] font-mono text-brand-accent/60 uppercase tracking-widest mb-1">{item.label}</span>
+            <div className="relative w-24 h-14 bg-white/5 border border-white/10 rounded-xl overflow-hidden shadow-2xl backdrop-blur-sm">
+               <div className={cn("absolute inset-0 opacity-40 blur-sm", item.color)} />
+               {/* Flowing particles */}
+               {[...Array(6)].map((_, j) => (
+                 <motion.div
+                   key={j}
+                   animate={{ x: [0, 100], opacity: [0, 1, 0] }}
+                   transition={{ duration: 1.5, repeat: Infinity, delay: j * 0.3 + item.delay }}
+                   className="absolute top-1/2 left-0 w-2 h-2 rounded-full bg-brand-accent/30"
+                 />
+               ))}
             </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-1 items-end mr-4">
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-brand-base/60 whitespace-nowrap">굴 패각</span>
-            <div className="w-24 h-12 bg-white/5 border border-white/10 rounded-r-xl overflow-hidden">
-               <div className="w-full h-full bg-brand-base/10 blur-sm" />
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* 02 Synthesis Reactor */}
-      <div className="relative w-1/2 aspect-[4/5] bg-gradient-to-b from-zinc-800 to-zinc-950 rounded-t-[100px] border-x border-t border-white/10 shadow-2xl flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-radial from-brand-accent/20 via-transparent to-transparent" />
-        <div className="w-2/3 h-1/3 bg-black/40 border border-brand-accent/30 rounded-lg flex items-center justify-center relative">
-          <div className="absolute inset-0 bg-brand-accent/5 animate-pulse" />
-          <div className="text-[8px] font-mono text-brand-accent/40 flex items-center gap-1 uppercase">
-            <Leaf className="w-3 h-3" /> NEXCYCLO
-          </div>
-        </div>
-        {/* Step label */}
-        <div className="absolute top-10 flex flex-col items-center">
-           <span className="text-[10px] font-mono text-white/30">C2</span>
-           <span className="text-xs font-bold text-brand-accent uppercase tracking-widest">02 수열합성</span>
-        </div>
-      </div>
+      {/* 02: Central Hydrothermal Reactor (Mechanical Core) */}
+      <motion.div 
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 z-20"
+      >
+        {/* Main Body */}
+        <div className="relative w-full h-full bg-gradient-to-b from-zinc-800 via-zinc-900 to-black rounded-t-[80px] rounded-b-3xl border border-white/10 shadow-[0_0_100px_rgba(78,188,100,0.15)] flex flex-col items-center pt-16">
+           {/* Progress Ring */}
+           <div className="absolute top-8 w-1 h-12 bg-gradient-to-b from-brand-accent to-transparent" />
+           
+           {/* Internal Plasma Window */}
+           <div className="w-2/3 h-1/3 bg-black/80 rounded-2xl border border-brand-accent/20 relative overflow-hidden flex items-center justify-center">
+              <div className="absolute inset-0 bg-radial from-brand-accent/20 via-transparent to-transparent flex items-center justify-center">
+                 <motion.div 
+                   animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+                   transition={{ duration: 3, repeat: Infinity }}
+                   className="w-16 h-16 rounded-full bg-brand-accent/10 blur-xl" 
+                 />
+              </div>
+              <div className="flex flex-col items-center">
+                 <Zap className="w-6 h-6 text-brand-accent animate-pulse" />
+                 <span className="text-[10px] font-mono text-brand-accent/50 mt-2">180℃ REACTING</span>
+              </div>
+           </div>
 
-      {/* 03 Flow Line & 03 Product */}
-      <div className="absolute right-0 bottom-1/4 flex flex-col items-start ml-4 z-20">
-         <div className="mb-4">
-           <span className="text-[10px] font-mono text-white/30">C3</span>
-           <span className="text-xs font-bold text-brand-accent block uppercase tracking-widest">03 에코블록 탄생</span>
-         </div>
-         <div className="w-48 h-32 bg-[#D9D9D9]/90 rounded-sm shadow-2xl border border-white/20 flex items-center justify-center relative overflow-hidden group">
-            <div className="absolute inset-0 grid-background opacity-20" />
-            <div className="flex flex-col items-center gap-2">
-              <Leaf className="w-8 h-8 text-brand-dark/20" />
-              <span className="font-outfit font-bold text-xl text-brand-dark/40 tracking-widest text-center uppercase">NEXCYCLO</span>
-            </div>
-            {/* Spark animation */}
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+           {/* Brand Plate */}
+           <div className="mt-12 group">
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg group-hover:bg-brand-accent/10 transition-all">
+                <Leaf className="w-3 h-3 text-brand-accent" />
+                <span className="text-[10px] font-outfit font-bold text-white tracking-widest uppercase">NEXCYCLO</span>
+              </div>
+           </div>
+        </div>
+
+        {/* Floating Accents */}
+        <div className="absolute -left-10 top-1/3 w-1.5 h-20 bg-brand-accent/20 blur-sm rounded-full" />
+        <div className="absolute -right-10 top-1/2 w-1.5 h-20 bg-brand-accent/20 blur-sm rounded-full" />
+      </motion.div>
+
+      {/* 03: The "Eco-Block" Birth (Output) */}
+      <motion.div 
+        initial={{ opacity: 0, x: 50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1, duration: 1 }}
+        className="absolute right-0 bottom-1/4 z-30"
+      >
+        <div className="flex flex-col items-start gap-4">
+           <div className="flex items-center gap-3">
+             <div className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-ping" />
+             <span className="text-[10px] font-mono text-brand-accent uppercase tracking-widest">03 에코블록 탄생</span>
+           </div>
+           
+           <motion.div 
+             whileHover={{ scale: 1.05 }}
+             className="w-56 h-36 bg-zinc-200 rounded-sm shadow-[0_40px_80px_rgba(0,0,0,0.5)] border border-white/40 relative overflow-hidden flex items-center justify-center group"
+           >
+              {/* Massive Industrial Texture */}
+              <div className="absolute inset-0 grid-dark opacity-10" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/5 via-transparent to-white/20" />
+              
+              <div className="flex flex-col items-center gap-3 relative z-10">
+                <Leaf className="w-10 h-10 text-brand-dark/20" />
+                <div className="flex flex-col items-center">
+                  <span className="font-outfit font-black text-2xl text-brand-dark/30 tracking-widest mb-1 italic">NEXCYCLO</span>
+                  <div className="h-0.5 w-12 bg-brand-dark/10" />
+                </div>
+              </div>
+
+              {/* Laser Engraving Animation Effect */}
               <motion.div 
-                animate={{ x: ["-100%", "200%"], y: ["-100%", "200%"] }}
-                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                className="w-1 h-32 bg-brand-accent blur-md rotate-45" 
+                initial={{ x: "-100%" }}
+                animate={{ x: "200%" }}
+                transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
+                className="absolute top-0 left-0 w-8 h-full bg-brand-accent/40 blur-2xl rotate-12"
               />
-            </div>
-         </div>
-      </div>
+              
+              {/* Product Glow */}
+              <div className="absolute top-0 left-0 w-full h-full bg-radial from-white/20 to-transparent group-hover:opacity-100 opacity-0 transition-opacity" />
+           </motion.div>
+        </div>
+      </motion.div>
 
-      {/* Particle dust */}
+      {/* Ambient Process Particles */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(30)].map((_, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, x: Math.random() * 400 - 200, y: Math.random() * 400 - 200 }}
+            initial={{ opacity: 0, x: Math.random() * 500 - 250, y: Math.random() * 500 - 250 }}
             animate={{ 
-              opacity: [0, 1, 0],
-              y: [0, -40]
+              opacity: [0, 0.4, 0],
+              y: [0, -100],
+              x: (i % 2 === 0 ? 30 : -30)
             }}
-            transition={{ duration: 2 + Math.random() * 3, repeat: Infinity, delay: Math.random() * 5 }}
+            transition={{ 
+              duration: 3 + Math.random() * 4, 
+              repeat: Infinity, 
+              delay: Math.random() * 5 
+            }}
             className="absolute top-1/2 left-1/2 w-0.5 h-0.5 bg-brand-accent rounded-full"
           />
         ))}
